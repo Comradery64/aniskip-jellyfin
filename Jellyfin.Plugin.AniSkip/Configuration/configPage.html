@@ -45,6 +45,16 @@
                 </div>
                 <div class="checkboxContainer checkboxContainer-withDescription">
                     <label>
+                        <input is="emby-checkbox" type="checkbox" id="EnableTvdbMapping" />
+                        <span>Map TheTVDB season &rarr; MAL (multi-cour support)</span>
+                    </label>
+                    <div class="fieldDescription">
+                        Resolves later seasons and split cours to the correct AniSkip entry using the
+                        Fribb anime-lists dataset (downloaded and cached). On by default.
+                    </div>
+                </div>
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label>
                         <input is="emby-checkbox" type="checkbox" id="AssumeSingleCour" />
                         <span>Apply a series-level MAL id to seasons &gt; 1</span>
                     </label>
@@ -78,6 +88,7 @@
                     document.querySelector('#EnableOutro').checked = config.EnableOutro;
                     document.querySelector('#EnableRecap').checked = config.EnableRecap;
                     document.querySelector('#EnableMixed').checked = config.EnableMixed;
+                    document.querySelector('#EnableTvdbMapping').checked = config.EnableTvdbMapping;
                     document.querySelector('#AssumeSingleCour').checked = config.AssumeSingleCour;
                     document.querySelector('#MinEpisodeSeconds').value = config.MinEpisodeSeconds;
                     Dashboard.hideLoadingMsg();
@@ -92,6 +103,7 @@
                     config.EnableOutro = document.querySelector('#EnableOutro').checked;
                     config.EnableRecap = document.querySelector('#EnableRecap').checked;
                     config.EnableMixed = document.querySelector('#EnableMixed').checked;
+                    config.EnableTvdbMapping = document.querySelector('#EnableTvdbMapping').checked;
                     config.AssumeSingleCour = document.querySelector('#AssumeSingleCour').checked;
                     config.MinEpisodeSeconds = parseInt(document.querySelector('#MinEpisodeSeconds').value || '0', 10);
                     ApiClient.updatePluginConfiguration(pluginId, config).then(function (result) {

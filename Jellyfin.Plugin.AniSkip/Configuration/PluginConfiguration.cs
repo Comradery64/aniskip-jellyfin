@@ -29,9 +29,17 @@ public class PluginConfiguration : BasePluginConfiguration
     public bool EnableMixed { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets a value indicating whether the TheTVDB series id + season number is mapped to
+    /// the correct MAL entry via the Fribb anime-lists dataset. This is what makes multi-season
+    /// (multi-cour) shows resolve to the right AniSkip entry. On by default.
+    /// </summary>
+    public bool EnableTvdbMapping { get; set; } = true;
+
+    /// <summary>
     /// Gets or sets a value indicating whether a series-level MAL id may be applied to seasons &gt; 1.
     /// Off by default: multi-cour anime map each season to a distinct MAL entry, so applying a
-    /// season 1 MAL id to later seasons would place skips at the wrong timestamps.
+    /// season 1 MAL id to later seasons would place skips at the wrong timestamps. Only used as a
+    /// fallback when the TVDB mapping does not cover the show.
     /// </summary>
     public bool AssumeSingleCour { get; set; }
 

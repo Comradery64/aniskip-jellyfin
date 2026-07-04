@@ -30,6 +30,20 @@ AniSkip is keyed on **MyAnimeList** ids. Jellyfin anime libraries usually carry
 [arm](https://arm.haglund.dev) service. Results (including the MAL lookup) are cached
 in-process, so a full-library scan hits each external service at most once per id.
 
+### Multi-cour resolution (TheTVDB → MAL)
+
+MAL (and therefore AniSkip) treats every cour as a **separate entry** that numbers
+episodes from 1, while TVDB groups a whole franchise under one series with seasons.
+So a series-level id only ever describes season 1. To resolve later seasons, the
+plugin maps the **series TheTVDB id + season number** to the correct MAL entry using
+the [Fribb anime-lists](https://github.com/Fribb/anime-lists) dataset (downloaded once
+and cached, refreshed weekly). Its `episode_offset` also handles seasons that TVDB
+merges from multiple cours — e.g. Dr. STONE "New World" Part 1 + 2 share TVDB season 3,
+so episodes 1–11 resolve to one MAL entry and 12–22 to the next, each numbered from 1.
+
+Resolution order per episode: season-level anime id → TVDB+season (Fribb) →
+series-level anime id (confined to season 1).
+
 ## Category mapping
 
 | AniSkip type | Jellyfin segment |

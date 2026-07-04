@@ -17,6 +17,7 @@ public class PluginServiceRegistrator : IPluginServiceRegistrator
     {
         serviceCollection.AddSingleton<ArmIdMapper>();
         serviceCollection.AddSingleton<AniSkipApiClient>();
+        serviceCollection.AddSingleton<FribbMappingService>();
         serviceCollection.AddSingleton<IMediaSegmentProvider, AniSkipSegmentProvider>();
     }
 }
