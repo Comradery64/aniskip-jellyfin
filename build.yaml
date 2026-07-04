@@ -1,0 +1,20 @@
+---
+name: "AniSkip"
+guid: "b7e9c4a2-1f3d-4c8e-9a5b-6d2e0f1a3c7d"
+version: 1
+targetAbi: "10.11.0.0"
+framework: "net9.0"
+owner: "isntfunny"
+overview: "Anime opening/ending/recap skip times from AniSkip as media segments"
+description: >
+  Fetches crowd-sourced anime opening, ending and recap timestamps from the AniSkip
+  database (api.aniskip.com) and publishes them through Jellyfin's Media Segments API,
+  so any client with skip-segment support can skip them. AniDB/AniList ids on your
+  anime are mapped to MyAnimeList ids via arm.haglund.dev. Fills the gap that audio
+  fingerprinting cannot: recaps differ every episode and have no repeating audio, so
+  only a crowd-sourced database can mark them.
+category: "General"
+artifacts:
+  - "Jellyfin.Plugin.AniSkip.dll"
+changelog: |-
+  - Initial release: op/ed/recap/mixed-op/mixed-ed as Intro/Outro/Recap segments.

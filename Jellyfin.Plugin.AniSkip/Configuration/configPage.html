@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>AniSkip</title>
+</head>
+<body>
+<div id="AniSkipConfigPage" data-role="page" class="page type-interior pluginConfigurationPage"
+     data-require="emby-input,emby-button,emby-checkbox,emby-select">
+    <div data-role="content">
+        <div class="content-primary">
+            <form id="AniSkipConfigForm">
+                <div class="verticalSection">
+                    <h2 class="sectionTitle">AniSkip</h2>
+                    <p class="fieldDescription">
+                        Crowd-sourced anime opening, ending and recap skip times from the AniSkip
+                        database (api.aniskip.com), published as Jellyfin media segments. AniDB/AniList
+                        ids on your anime are mapped to MyAnimeList ids via arm.haglund.dev.
+                        Run the "Detect and Analyze Media Segments" task after changing settings.
+                    </p>
+                </div>
+
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label>
+                        <input is="emby-checkbox" type="checkbox" id="EnableIntro" />
+                        <span>Openings (Intro)</span>
+                    </label>
+                </div>
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label>
+                        <input is="emby-checkbox" type="checkbox" id="EnableOutro" />
+                        <span>Endings (Outro)</span>
+                    </label>
+                </div>
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label>
+                        <input is="emby-checkbox" type="checkbox" id="EnableRecap" />
+                        <span>Recaps</span>
+                    </label>
+                </div>
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label>
+                        <input is="emby-checkbox" type="checkbox" id="EnableMixed" />
+                        <span>Mixed openings/endings (op/ed fused with story content)</span>
+                    </label>
+                </div>
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label>
+                        <input is="emby-checkbox" type="checkbox" id="AssumeSingleCour" />
+                        <span>Apply a series-level MAL id to seasons &gt; 1</span>
+                    </label>
+                    <div class="fieldDescription">
+                        Off by default. Only enable if your anime are single-cour and stored with a
+                        series-level id; otherwise later-season skips land at the wrong timestamps.
+                    </div>
+                </div>
+
+                <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="MinEpisodeSeconds">Minimum episode length (seconds)</label>
+                    <input is="emby-input" type="number" id="MinEpisodeSeconds" min="0" step="1" />
+                    <div class="fieldDescription">Episodes shorter than this are skipped (guards against shorts/specials).</div>
+                </div>
+
+                <button is="emby-button" type="submit" class="raised button-submit block emby-button">
+                    <span>Save</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        (function () {
+            var pluginId = "b7e9c4a2-1f3d-4c8e-9a5b-6d2e0f1a3c7d";
+
+            document.querySelector('#AniSkipConfigPage').addEventListener('pageshow', function () {
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                    document.querySelector('#EnableIntro').checked = config.EnableIntro;
+                    document.querySelector('#EnableOutro').checked = config.EnableOutro;
+                    document.querySelector('#EnableRecap').checked = config.EnableRecap;
+                    document.querySelector('#EnableMixed').checked = config.EnableMixed;
+                    document.querySelector('#AssumeSingleCour').checked = config.AssumeSingleCour;
+                    document.querySelector('#MinEpisodeSeconds').value = config.MinEpisodeSeconds;
+                    Dashboard.hideLoadingMsg();
+                });
+            });
+
+            document.querySelector('#AniSkipConfigForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                    config.EnableIntro = document.querySelector('#EnableIntro').checked;
+                    config.EnableOutro = document.querySelector('#EnableOutro').checked;
+                    config.EnableRecap = document.querySelector('#EnableRecap').checked;
+                    config.EnableMixed = document.querySelector('#EnableMixed').checked;
+                    config.AssumeSingleCour = document.querySelector('#AssumeSingleCour').checked;
+                    config.MinEpisodeSeconds = parseInt(document.querySelector('#MinEpisodeSeconds').value || '0', 10);
+                    ApiClient.updatePluginConfiguration(pluginId, config).then(function (result) {
+                        Dashboard.processPluginConfigurationUpdateResult(result);
+                    });
+                });
+                return false;
+            });
+        })();
+    </script>
+</div>
+</body>
+</html>
