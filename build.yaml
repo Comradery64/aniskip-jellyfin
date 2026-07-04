@@ -1,7 +1,7 @@
 ---
 name: "AniSkip"
 guid: "b7e9c4a2-1f3d-4c8e-9a5b-6d2e0f1a3c7d"
-version: 2
+version: 3
 targetAbi: "10.11.0.0"
 framework: "net9.0"
 owner: "isntfunny"
@@ -17,6 +17,8 @@ category: "General"
 artifacts:
   - "Jellyfin.Plugin.AniSkip.dll"
 changelog: |-
+  - Also query AniSkip for episodes with an unknown runtime (media not analyzed),
+    using episodeLength 0, instead of skipping them.
   - Multi-cour support: map TheTVDB series id + season to the correct MAL entry
     via the Fribb anime-lists dataset (handles later seasons and split cours).
   - Initial release: op/ed/recap/mixed-op/mixed-ed as Intro/Outro/Recap segments.

@@ -105,7 +105,10 @@ public sealed class AniSkipSegmentProvider : IMediaSegmentProvider
         var runtimeSeconds = episode.RunTimeTicks.HasValue
             ? episode.RunTimeTicks.Value / (double)TimeSpan.TicksPerSecond
             : 0d;
-        if (runtimeSeconds < config.MinEpisodeSeconds)
+        // A genuine short (a real runtime below the floor) is skipped. An unknown
+        // runtime (0 — media not analyzed yet) still proceeds: AniSkip is queried with
+        // episodeLength 0, which returns the top-voted times regardless of length.
+        if (runtimeSeconds > 0 && runtimeSeconds < config.MinEpisodeSeconds)
         {
             return Array.Empty<MediaSegmentDto>();
         }
