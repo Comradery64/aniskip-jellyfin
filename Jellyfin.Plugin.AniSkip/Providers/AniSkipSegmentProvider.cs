@@ -338,4 +338,15 @@ public sealed class AniSkipSegmentProvider : IMediaSegmentProvider
 
         return null;
     }
+
+#if NET10_0_OR_GREATER
+    /// <inheritdoc />
+    public Task CleanupExtractedData(Guid itemId, CancellationToken cancellationToken)
+    {
+        // Segments are persisted server-side by the MediaSegmentManager; this
+        // plugin extracts from the AniSkip API on demand and keeps no sidecar
+        // data, so there is nothing to clean up for a removed item.
+        return Task.CompletedTask;
+    }
+#endif
 }
